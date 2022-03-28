@@ -183,16 +183,18 @@ def cast(spell):
 		if si1 == "strange rock" and inventory.find(si1) and si2 == "journal" and inventory.find(si2):
 			say("The stange rock glows brighter with more powerful energy.")
 			say("The journal begins flippping through pages by itself, the same glow you can see on the rock is eminating from beneath the pages until it lands on a page with the word 'Shift' sprawled on it.")
-			shiftroom = input("Shift allows you to instantly transport to any are in the vacinity. Where do you want to shift to?\n")
-			if shiftroom == forest:
-				current_room = forest
-			if shiftroom == strangetree:
-				current_room = strangetree
-			if shiftroom == tree:
-				current_room = forest
-				say(f"You close your eyes and cast Shift. You are now at the {shiftroom}.")
-				look()
-			else:
+			say("Shift allows you to randomly transport to any are in the vacinity.")
+			current_room = Room((random.choice([
+				forest,
+				strangetree,
+				treehouseext,
+				treehouseint,
+				cliffside,
+				beach
+			])))	
+			say(f"You close your eyes and cast Shift. You are now at the {shiftroom}.")
+			look()
+			elif shiftroom is not forest or shiftroom is not strangetree or shiftroom is not treehouseext or shiftroom is not treehouseint or shiftroom is not cliffside or shiftroom is not beach:
 				say("That is not a valid room.")
 		elif si1 != "strange rock" or si2 != "journal":
 			say("That is not the correct item to cast the spell.")
