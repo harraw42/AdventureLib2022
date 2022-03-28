@@ -194,8 +194,6 @@ def cast(spell):
 			])))	
 			say(f"You close your eyes and cast Shift. You are now at the {shiftroom}.")
 			look()
-			elif shiftroom is not forest or shiftroom is not strangetree or shiftroom is not treehouseext or shiftroom is not treehouseint or shiftroom is not cliffside or shiftroom is not beach:
-				say("That is not a valid room.")
 		elif si1 != "strange rock" or si2 != "journal":
 			say("That is not the correct item to cast the spell.")
 		elif "strange rock" not in inventory or "journal" not in inventory:
