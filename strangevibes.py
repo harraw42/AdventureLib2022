@@ -184,14 +184,10 @@ def cast(spell):
 			say("The stange rock glows brighter with more powerful energy.")
 			say("The journal begins flippping through pages by itself, the same glow you can see on the rock is eminating from beneath the pages until it lands on a page with the word 'Shift' sprawled on it.")
 			say("Shift allows you to randomly transport to any are in the vacinity.")
-			current_room = Room((random.choice([
-				forest,
-				strangetree,
-				treehouseext,
-				treehouseint,
-				cliffside,
-				beach
-			])))	
+			
+
+
+			
 			say(f"You close your eyes and cast Shift. You are now at the {shiftroom}.")
 			look()
 		elif si1 != "strange rock" or si2 != "journal":
