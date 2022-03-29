@@ -55,7 +55,7 @@ strangerock.description = "a weird glowing rock youfound when you woke up. Just 
 fungus = Item("Some assorted mushrooms of various shapes, sizes and colours","mushrooms")
 fungus.description = "a bunch of weird looking mushrooms. You are unsure if any of them are edible, and you don't want to find out the hard way."
 
-ladder = Item("A rope ladder","rope ladder")
+ladder = Item("A rope ladder","rope ladder", "ladder")
 ladder.description = "a rope ladder you found crankled on the floor under the strange treehouse. It looks tall, maybe 12 metres."
 
 dogtags = Item("A set of dogtags","dogtags")
@@ -84,6 +84,7 @@ forest.items.add(strangerock)
 treehouseext.items.add(ladder)
 treehouseint.items.add(fungus)
 beach.items.add(journal)
+beach.items.add(bottleshard)
 
 #-- FUNCTIONS --
 @when("go DIRECTION")
@@ -115,13 +116,23 @@ def use(item):
 			say("The keypad beeps a low note and nothing happens. Maybe there's something with the combination on it nearby.")
 	elif item == "keypad":
 		say("There is no keypad in this room.")
-	else:
+	elif current_room == treehouseext and item == "ladder":
 		if inventory.find(item) == ladder and current_room == treehouseext:
 			print("You unroll the rope ladder and secure it in place. You can now move up and down the ladder.")
 			print("You can now enter the treehouse")
 			treehouseext.north = treehouseint
 		else:
 			print("You can't use that here")
+	elif item == "mushrooms":
+		rly? = input("You don't even know what species of mushroom they are. Are you sure you want to eat the mushrooms?\n")
+		if rly?.lower() == "yes":
+			say("You eat the mushrooms. You immediately feel an immense pain in your stomach, like your stomach is being eaten from the inside by a thousand tiny worms. You keel over ad your vision fades.")
+			say("YOU DIED")
+			quit()
+		elif rly?.lower() == "no":
+			say("Probably a good call.")
+		else:
+			say("That is not a response.")
 
 
 
