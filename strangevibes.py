@@ -126,7 +126,7 @@ def use(item):
 	elif item == "mushrooms":
 		rly = input("You don't even know what species of mushroom they are. Are you sure you want to eat the mushrooms?\n")
 		if rly.lower() == "yes":
-			say("You eat the mushrooms. You immediately feel an immense pain in your stomach, like your stomach is being eaten from the inside by a thousand tiny worms. You keel over ad your vision fades.")
+			say("You eat the mushrooms. You immediately feel an immense pain in your stomach, like your stomach is being eaten from the inside by a thousand tiny worms. You keel over and your vision fades.")
 			say("YOU DIED")
 			quit()
 		elif rly.lower() == "no":
