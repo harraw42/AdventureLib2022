@@ -8,27 +8,27 @@ say(f"Yes, that was your name. {name}. Something about it seems familiar, yet un
 
 #-- ROOMS --
 forest = Room("""
-	A clearing in a dense forest. You woke up here.
+	in a clearing in a dense forest. You woke up here.
 	""")
 
 strangetree = Room("""
-	A claring with a strange tree in its center. This tree is significantly larger than the ones surrounding it and it appears to be leaking some strange glowing blue sap.
+	in a claring with a strange tree in its center. This tree is significantly larger than the ones surrounding it and it appears to be leaking some strange glowing blue sap.
 	""")
 
 treehouseext = Room("""
-	A forest clearing with a large, rotten tree house on a tree in its center, the ladder is still intact, laying rolled up on the ground beneath the treehouse.
+	in a forest clearing with a large, rotten tree house on a tree in its center, the ladder is still intact, laying rolled up on the ground beneath the treehouse.
 	""")
 
 treehouseint = Room("""
-	The inside of the large tree house. It smells of mould and you can count several types of fungus in the area around you.
+	inside of a large tree house. It smells of mould and you can count several types of fungus in the area around you.
 	""")
 
 cliffside = Room("""
-	An area where the trees part, revealing a large cliff edge. You stand and pear over the edge, estimating the drop to be about 15 or so metres. Below is a small beach.
+	in an area where the trees part, revealing a large cliff edge. You stand and pear over the edge, estimating the drop to be about 15 or so metres. Below is a small beach.
 	""")
 
 beach = Room("""
-	The middle of the small beach. The tide is in. the sound of seagulls chirping unlockes some distant memory, but you feel as if you are unable to access it.
+	on a small beach. The tide is in. the sound of seagulls chirping unlockes some distant memory, but you feel as if you are unable to access it.
 	""")
 
 
@@ -49,7 +49,7 @@ current_room = forest
 Item.description = ""
 
 
-strangerock = Item("A strange glowing rock","rock", "strange rock")
+strangerock = Item("A strange glowing rock","rock", "strange rock", "thrumian stone")
 strangerock.description = "a weird glowing rock youfound when you woke up. Just looking at it feels...odd, as if you shouldn't be seeing it. A voice in your head tells you to be careful, but you're not sure if it was your own thought or someone, something, else's. Holding it in your hand, you feel as though its buzzing or vibrating slowly in your hand."
 
 fungus = Item("Some assorted mushrooms of various shapes, sizes and colours","mushrooms")
@@ -61,11 +61,15 @@ ladder.description = "a rope ladder you found crankled on the floor under the st
 dogtags = Item("A set of dogtags","dogtags")
 dogtags.description = f"a set of dogtags with a name and a number enscribed in it. {name}, 23032022."
 
-journal = Item("A sandy journal","journal")
+journal = Item("A sandy journal","journal", "proof of spell")
 journal.description = f"""
 a journal that you found on the beach. Something in your mind feels unlocked. You flip through the pages until something catches your eye. Two pages, side by side with a single phrase written along them. The phrase looks as though it was written in a rush with a bloody finger...it reads: 'CAst ThE SpeLL' followed by a list of, what you would asssume are spells:
 Shift - Thrumian Stone + Proof of Spell
+Focus Energy - Thrumian Stone + Proof of Spell + Slicing Instrument
 """
+
+bottleshard = Item("A shard of glass", "glass shard", "slicing instrument", "shard")
+bottleshard.description = "a shard of glass, probably from a bottle of some sort of liquor."
 
 
 #-- BAGS --
@@ -91,10 +95,10 @@ def travel(direction):
 		#the direction the player wants to go
 		current_room = current_room.exit(direction)
 		print(f"You go {direction}")
-		print(current_room)
+		print(f"You are {current_room}")
 	elif direction == south and current_room == treehouseint:
 		say("You jump down")
-		print(current_room)
+		print(f"You are {current_room}")
 	else:
 		print("You can't go that way")
 
@@ -183,7 +187,7 @@ def cast(spell):
 	if spell == "shift":
 		si1 = input("Please input the first necessary spell item.\n")
 		si2 = input("Please input the second necessary spell item.\n")
-		if si1 == "strange rock" and inventory.find(si1) and si2 == "journal" and inventory.find(si2):
+		if si1 == "strange rock" or si1 == "rock" or si1 == "thrumian stone" and inventory.find(si1) and si2 == "journal" or si2 == "proof of spell" and inventory.find(si2):
 			say("The stange rock glows brighter with more powerful energy.")
 			say("The journal begins flippping through pages by itself, the same glow you can see on the rock is eminating from beneath the pages until it lands on a page with the word 'Shift' sprawled on it.")
 			say("Shift allows you to randomly transport to any are in the vacinity.")
@@ -200,16 +204,30 @@ def cast(spell):
 				current_room = cliffside
 			if shiftroom == 6:
 				current_room = beach
-			say(f"You close your eyes and cast Shift. You are now at the {shiftroom}.")
-			print(current_room)
+			say(f"You close your eyes and cast Shift. You are now at the {current_room}.")
+			print(f"You are {current_room}")
 			look()
-		elif si1 != "strange rock" or si2 != "journal":
+		elif si1 != "strange rock" or si1 != "rock" or si1 != "thrumian stone" or si2 != "journal" or si2 != "proof of spell":
 			say("That is not the correct item to cast the spell.")
 		elif "strange rock" not in inventory or "journal" not in inventory:
 			say("You do not have the necessary items for the spell.")
-
-
-
+	elif spell == "focus energy":
+		if focused == False:
+			fe1 = input("Please input the first necessary spell item.\n")
+			fe2 = input("Please input the second necessary spell item.\n")
+			fe3 = input("Please input the third necessary spell item.\n")
+			if fe1 == "strange rock" or fe1 == "rock" or fe1 == "thrumian stone" and inventory.find(fe1) and fe2 == "journal" or fe2 == "proof of spell" and inventory.find(fe2) and fe3 == "shard of glass" or fe3 == "slicing instrument" or fe3 == "glass shard" or fe3 == "shard" and inventory.find(fe3):
+				say("The stange rock glows brighter with more powerful energy.")
+				say("The journal begins flippping through pages by itself, the same glow you can see on the rock is eminating from beneath the pages until it lands on a page with the words 'Focus Energy' sprawled on it.")
+				say("The glass shard begins to float, dancing and diving through the air around you until it begins to float around your left arm. It plunges down suddenly, refracting with magical energy, and slices deeply into your forearm before hitting the floor and shattering. You recoil in pain, but none comes. Only anger. You feel a fury you have never felt before, and you clench your fists, hard. You want to hit something.")
+				focused == True
+			elif fe1 != "strange rock" or fe1 != "rock" or fe1 != "thrumian stone" or fe2 != "journal" or fe2 != "proof of spell" or fe3 != "shard of glass" or fe3 != "slicing instrument" or fe3 != "glass shard" or fe3 != "shard":
+				say("That is not the correct item to cast the spell.")
+			elif "strange rock" not in inventory or "journal" not in inventory or "glass shard" not in inventory:
+				say("You do not have the necessary items for the spell.")
+		else:
+			say("You feel the anger leave you as you cast the spell again. You return to your normal passive self. Everything is going to be okay. Don't let the anger take over, it'll all be over soon...")
+			focused == False
 		
 #-- MAIN --
 def main ():
