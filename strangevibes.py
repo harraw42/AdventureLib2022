@@ -1,5 +1,6 @@
 from adventurelib import *
 Room.items = Bag()
+import random
 
 #-- INTRO --
 name = input("Your eyes slowly open as the grasp of consciousness slowly grasps you. Light beams between the dense canopy of the cold forest. You have no idea how you got here. All you can remember is your name, which is...")
@@ -39,7 +40,7 @@ strangetree.west = forest
 treehouseext.east = forest
 forest.south = cliffside
 cliffside.north = forest
-
+treehouseint.south = treehouseext
 
 
 current_room = forest
@@ -91,6 +92,9 @@ def travel(direction):
 		current_room = current_room.exit(direction)
 		print(f"You go {direction}")
 		print(current_room)
+	elif direction == south and current_room == treehouseint:
+		say("You jump down")
+		print(current_room)
 	else:
 		print("You can't go that way")
 
@@ -112,7 +116,6 @@ def use(item):
 			print("You unroll the rope ladder and secure it in place. You can now move up and down the ladder.")
 			print("You can now enter the treehouse")
 			treehouseext.north = treehouseint
-			treehouseint.south = treehouseext
 		else:
 			print("You can't use that here")
 
@@ -184,11 +187,21 @@ def cast(spell):
 			say("The stange rock glows brighter with more powerful energy.")
 			say("The journal begins flippping through pages by itself, the same glow you can see on the rock is eminating from beneath the pages until it lands on a page with the word 'Shift' sprawled on it.")
 			say("Shift allows you to randomly transport to any are in the vacinity.")
-			
-
-
-			
+			shiftroom = random.randint(1, 6)
+			if shiftroom == 1:
+				current_room = forest
+			if shiftroom == 2:
+				current_room = strangetree
+			if shiftroom == 3:
+				current_room = treehouseext
+			if shiftroom == 4:
+				current_room = treehouseint
+			if shiftroom == 5:
+				current_room = cliffside
+			if shiftroom == 6:
+				current_room = beach
 			say(f"You close your eyes and cast Shift. You are now at the {shiftroom}.")
+			print(current_room)
 			look()
 		elif si1 != "strange rock" or si2 != "journal":
 			say("That is not the correct item to cast the spell.")
