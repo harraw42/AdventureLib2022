@@ -31,6 +31,9 @@ beach = Room("""
 	on a small beach. The tide is in. the sound of seagulls chirping unlockes some distant memory, but you feel as if you are unable to access it.
 	""")
 
+beachcave = Room("""
+	in a small cave that was previously boarded off. An old man sits in the center of the room cradling a small kitten. He seems frail. You sense something about him. You walk over to talk to the old man.
+	""")
 
 
 #-- CONNECTIONS --
@@ -134,6 +137,18 @@ def use(item):
 		else:
 			say("That is not a response.")
 
+@when ("attack TARGET")
+def attack(target):
+	if focused == True and current_room == beach and target == "wooden boards" or target == "boards":
+		say("You let your rage go and smash your fists against the wooden boards. They shatter like glass and you fall through them into a small cave. It is dark and dank in here.")
+		current_room == beachcave
+		beach.east = beachcave
+		beachcave.west = beach
+		say(f"You are {current_room}.")
+	elif focused == False and current_room == beach and target == "wooden boards" or target == "boards":
+		say("You try as hard as you can and strike the wooden boards with all your might, but you only end up hurting your fist. Maybe you should find a way to hit them harder.")
+	else:
+		say("You cannot do that.")
 
 
 @when ("look")
@@ -147,10 +162,13 @@ def look():
 			print(item)
 	elif current_room == cliffside:
 		say("You think you see something in a bush to your right. Upon further inspection, you realize its a keypad. As you near it, the display on the front lights up with artificial green, neon text. It looks as though it requires an 8 digit combination.")
+	elif current_room == beach:
+		say("You see what looks like a cave entrance, however it is boarded up with thick, stong looking wooden boards. You could try breaking them, but you are unsure if you would be strong enough.")
 
 @when ("get ITEM")
 @when ("pick up ITEM")
 @when ("take ITEM")
+@when ("grab ITEM")
 def pickup(item):
 	if item in current_room.items:
 		#aquires the item from the room
@@ -232,6 +250,7 @@ def cast(spell):
 				say("The journal begins flippping through pages by itself, the same glow you can see on the rock is eminating from beneath the pages until it lands on a page with the words 'Focus Energy' sprawled on it.")
 				say("The glass shard begins to float, dancing and diving through the air around you until it begins to float around your left arm. It plunges down suddenly, refracting with magical energy, and slices deeply into your forearm before hitting the floor and shattering. You recoil in pain, but none comes. Only anger. You feel a fury you have never felt before, and you clench your fists, hard. You want to hit something.")
 				focused == True
+				inventory.remove(bottleshard)
 			elif fe1 != "strange rock" or fe1 != "rock" or fe1 != "thrumian stone" or fe2 != "journal" or fe2 != "proof of spell" or fe3 != "shard of glass" or fe3 != "slicing instrument" or fe3 != "glass shard" or fe3 != "shard":
 				say("That is not the correct item to cast the spell.")
 			elif "strange rock" not in inventory or "journal" not in inventory or "glass shard" not in inventory:
@@ -239,6 +258,28 @@ def cast(spell):
 		else:
 			say("You feel the anger leave you as you cast the spell again. You return to your normal passive self. Everything is going to be okay. Don't let the anger take over, it'll all be over soon...")
 			focused == False
+
+@when ("talk to TARGET")
+def talk(target):
+	if target == "old man" and current_room == beachcave:
+		say("""
+			You open your mouth to speak but he cuts you off. A sense of desperation hangs in the air as he speaks.
+			'Ah! You are awake! Did they follow you? Do they know where you are? We need to-'
+			He pauses as he looks at you and you can see him begin to panic as he sees how confused you look.
+			'They got you. Look my son, you won't remember anything about your past. I'm assuming you just woke up and didn't know where you were. Am I correct?'
+			You nod.
+			'Well, we are in trouble, big trouble. There are dangerous beings looking for us, and we need to go. They almost killed us in our last incounter, left us stranded here, in the middle of nowhere, but I was able to use my magic to alter the surroundings and guide you to me. It worked, judging by the fact that you are standing right in front of me right now. We need to get your memory back, but for that I am going to need a few different items-'
+			A loud horn sounds in the distance.
+			'Dammit! They found us. Quickly, I need three things: A Thrumian Stone, which is a strange looking glowing rock, sap from a Thrumian struck tree and the heart of a Dudgurio Lacktus, an elemental pet of sorts often created by the Dudgurio's, the beings that are hunting us. I gt the sense that one is near. Go, go now and collect these items for me!
+			""")
+		golemsummon == True
+	else:
+		say("You cannot do that.")
+
+if golemsummon == True and current_room == cliffside:
+	say("The ground begins to shake as the horn sounds yet again in the distance. Slowly, the nearby rocks begin to roll and clump together as if affected by some strange gravity. The rocks form a leg, then another, then a torso, two arms and finally, a menacing looking head that arches to look at you. The Dudgurio Lacktus stands before you and lets out a mighty roar. Time to fight I guess...")
+	firstturn = input("The Dudgurio Lacktus charges towards you like a bull and sweeps low with its massive rocky arms. Do you dodge or attack?\n")
+	if firstturn.lower() == "dodge":
 		
 #-- MAIN --
 def main ():
