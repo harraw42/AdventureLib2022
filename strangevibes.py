@@ -55,7 +55,7 @@ Item.description = ""
 strangerock = Item("A strange glowing rock","rock", "strange rock", "thrumian stone")
 strangerock.description = "a weird glowing rock youfound when you woke up. Just looking at it feels...odd, as if you shouldn't be seeing it. A voice in your head tells you to be careful, but you're not sure if it was your own thought or someone, something, else's. Holding it in your hand, you feel as though its buzzing or vibrating slowly in your hand."
 
-fungus = Item("Some assorted mushrooms of various shapes, sizes and colours","mushrooms")
+fungus = Item("Some assorted mushrooms of various shapes, sizes and colours","mushrooms", "Thrumian growth mushrooms")
 fungus.description = "a bunch of weird looking mushrooms. You are unsure if any of them are edible, and you don't want to find out the hard way."
 
 ladder = Item("A rope ladder","rope ladder", "ladder")
@@ -73,6 +73,15 @@ Focus Energy - Thrumian Stone + Proof of Spell + Slicing Instrument
 
 bottleshard = Item("A shard of glass", "glass shard", "slicing instrument", "shard")
 bottleshard.description = "a shard of glass, probably from a bottle of some sort of liquor."
+
+strangecoin = Item("A strange golden coin", "stange coin", "gold coin", "coin")
+strangecoin.description = "a strange golden coin. You are certain this wasn't here when you woke up."
+
+strnagetreesap = Item("Strange sap from the glowing tree", "strange tree sap", "sap")
+strangetreesap.description = "sap from the stange glowing tree."
+
+dudguriolacktusheart = Item("The heart of the Dudgurio Lacktus","Dudgurio Lacktus heart", "Lacktus heart","heart")
+dudguriolacktusheart.description = "The heart of the Dudgurio Lacktus. That was one hell of a fight."
 
 
 #-- BAGS --
@@ -248,9 +257,10 @@ def cast(spell):
 			if fe1 == "strange rock" or fe1 == "rock" or fe1 == "thrumian stone" and inventory.find(fe1) and fe2 == "journal" or fe2 == "proof of spell" and inventory.find(fe2) and fe3 == "shard of glass" or fe3 == "slicing instrument" or fe3 == "glass shard" or fe3 == "shard" and inventory.find(fe3):
 				say("The stange rock glows brighter with more powerful energy.")
 				say("The journal begins flippping through pages by itself, the same glow you can see on the rock is eminating from beneath the pages until it lands on a page with the words 'Focus Energy' sprawled on it.")
-				say("The glass shard begins to float, dancing and diving through the air around you until it begins to float around your left arm. It plunges down suddenly, refracting with magical energy, and slices deeply into your forearm before hitting the floor and shattering. You recoil in pain, but none comes. Only anger. You feel a fury you have never felt before, and you clench your fists, hard. You want to hit something.")
+				say("The glass shard begins to float, dancing and diving through the air around you until it begins to float around your left arm. It plunges down suddenly, refracting with magical energy, and slices deeply into your forearm before falling, no longer affected by this divine energy. You recoil in pain, but none comes. Only anger. You feel a fury you have never felt before, and you clench your fists, hard as all of your energy focuses and fuels your anger. You want to hit something.")
 				focused == True
 				inventory.remove(bottleshard)
+				current_room.items.add(bottleshard)
 			elif fe1 != "strange rock" or fe1 != "rock" or fe1 != "thrumian stone" or fe2 != "journal" or fe2 != "proof of spell" or fe3 != "shard of glass" or fe3 != "slicing instrument" or fe3 != "glass shard" or fe3 != "shard":
 				say("That is not the correct item to cast the spell.")
 			elif "strange rock" not in inventory or "journal" not in inventory or "glass shard" not in inventory:
@@ -270,16 +280,51 @@ def talk(target):
 			You nod.
 			'Well, we are in trouble, big trouble. There are dangerous beings looking for us, and we need to go. They almost killed us in our last incounter, left us stranded here, in the middle of nowhere, but I was able to use my magic to alter the surroundings and guide you to me. It worked, judging by the fact that you are standing right in front of me right now. We need to get your memory back, but for that I am going to need a few different items-'
 			A loud horn sounds in the distance.
-			'Dammit! They found us. Quickly, I need three things: A Thrumian Stone, which is a strange looking glowing rock, sap from a Thrumian struck tree and the heart of a Dudgurio Lacktus, an elemental pet of sorts often created by the Dudgurio's, the beings that are hunting us. I gt the sense that one is near. Go, go now and collect these items for me!
+			'Dammit! They found us. Quickly, I need three things: A Thrumian Stone, which is a strange looking glowing rock, sap from a Thrumian struck tree, the Thrumian growth mushrooms and the heart of a Dudgurio Lacktus, an elemental pet of sorts often created by the Dudgurio's, the beings that are hunting us. I gt the sense that one is near. Go, go now and collect these items for me!
 			""")
 		golemsummon == True
 	else:
 		say("You cannot do that.")
 
+if golemsummon == True and current_room == forest:
+	say("Something on the ground catches your eye as the suns glint reflects off of it. You approach it and see it is a gold coin. You are unsure of it. It feels as though it is watching you.")
+	forest.items.add(strangecoin)
+
 if golemsummon == True and current_room == cliffside:
 	say("The ground begins to shake as the horn sounds yet again in the distance. Slowly, the nearby rocks begin to roll and clump together as if affected by some strange gravity. The rocks form a leg, then another, then a torso, two arms and finally, a menacing looking head that arches to look at you. The Dudgurio Lacktus stands before you and lets out a mighty roar. Time to fight I guess...")
-	firstturn = input("The Dudgurio Lacktus charges towards you like a bull and sweeps low with its massive rocky arms. Do you dodge or attack?\n")
-	if firstturn.lower() == "dodge":
+	firstturn = input("The Dudgurio Lacktus charges towards you like a bull and sweeps low with its massive rocky arms. Do you dodge, parry, counter or attack?\n")
+	if firstturn.lower() == "dodge" or firstturn.lower() == "counter":
+		say("You slide under its massive boulder of a fist as it swings at you and you appear behind it. It stands and appears to be confused.")
+		secondturn = input("The Lacktus is standing, growling to itself with its back turned. Do you dodge, parry, counter or attack?\n")
+		if secondturn.lower() == "attack" and focused == True:
+			say("You feel your energy focus again and you strike the Lacktus. It roars in pain as a chunk of its back crumbles away. It swings around to face you.")
+			thirdturn = input("The Lacktus is very mad, and it swings at your face, but not as hard as it could because it is wounded. Do you dodge, parry, counter or attack?\n")
+			if thirdturn.lower() == "counter" or thirdturn.lower() == "parry":
+				say("You slide under the Lacktus' arm and deliver a brutal uppercut to its chin. It wails and falls bacwards.")
+				fourthturn = input("The Lacktus is wounded and its chin is crumbling from your last attack. Do you dodge, parry, counter or attack?\n")
+				if fourthturn.lower() == "attack":
+					say("You strike the Lacktus straight across the side of its head and it roars in anguish. It reels back and stairs at the sky, uttering something in a strange language that you don't understand before crumbling into a pile of rocks.")
+
+
+					
+			else:
+				say("The Lacktus stikes you and you flail to the ground, you broken body mangled and bloody.")
+				say("YOU DIED")
+				quit()
+		elif secondturn.lower() == "attack" and focused == False:
+			say("You swing as hard as you can at the golem but nothing happens and you only end up hurting yourself. The Lacktus swats you aside like a fly and you go flying into a nearby tree. You hear a distinct snap as your back bends around the tree and you lose all feeling in your legs. Blood gurgles in your mouth as your vision fades.")
+			say("YOU DIED")
+			quit()
+		else:
+			say(f"You attempt to {firstturn} the Lacktus, but it swats you aside like a fly and you go flying into a nearby tree. You hear a distinct snap as your back bends around the tree and you lose all feeling in your legs. Blood gurgles in your mouth as your vision fades.")
+		say("YOU DIED")
+		quit()
+	else:
+		say(f"You attempt to {firstturn} the Lacktus, but it swats you aside like a fly and you go flying into a nearby tree. You hear a distinct snap as your back bends around the tree and you lose all feeling in your legs. Blood gurgles in your mouth as your vision fades.")
+		say("YOU DIED")
+		quit()
+	elif firstturn.lower() == "use strange coin" or secondturn.lower() == "use strange coin" or thirdturn.lower() == "use strange coin" or fourthturn.lower() == "use strange coin":
+
 		
 #-- MAIN --
 def main ():
